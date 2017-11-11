@@ -12,6 +12,7 @@ exports.tip = {
 	usage: "<subcommand>",
 	description: 'balance: get your balance\n    deposit: get adress for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    <user> <amount>: mention a user with @ and then the amount to tip them',
 	process: async function(bot,msg,suffix){
+	var helpmessage = 'Please use <#369896313082478594> or DM <@372832162572926987> to talk to tipbot.'
         let tipper = msg.author.id,
             words = msg.content.trim().split(' ').filter( function(n){return n !== "";} ),
             subcommand = words.length >= 2 ? words[1] : 'help';
@@ -48,7 +49,7 @@ function doBalance(message, tipper) {
 
 function doDeposit(message, tipper) {
   if(!inPrivateOrBotSandbox(message)){
-    message.reply('Please use <#369896313082478594> or DM <@372832162572926987> to talk to tipbot.');
+    message.reply(helpmessage);
     return;
   }
   getAddress(tipper, function(err, address) {
@@ -64,7 +65,7 @@ function doDeposit(message, tipper) {
 
 function doWithdraw(message, tipper, words) {
   if(!inPrivateOrBotSandbox(message)){
-    message.reply('Please use <#369896313082478594> or DM <@372832162572926987> to talk to tipbot.');
+    message.reply(helpmessage);
     return;
   }
   if (words.length < 4) {
@@ -117,7 +118,7 @@ function doTip(message, tipper, words) {
 
 function doHelp(message) {
   if(!inPrivateOrBotSandbox(message)){
-    message.reply('Please use <#369896313082478594> or DM <@372832162572926987> to talk to tipbot.');
+    message.reply(helpmessage);
     return;
   }
   message.reply('Sent you help via DM!');
