@@ -96,9 +96,9 @@ function checkMessageForCommand(msg, isEdit) {
 }
 
 bot.on("message", msg => checkMessageForCommand(msg, false));
-bot.on("messageUpdate", (oldMessage, newMessage) => {
+/*bot.on("messageUpdate", (oldMessage, newMessage) => {
   checkMessageForCommand(newMessage, true);
-});
+});*/
 
 exports.addCommand = function(commandName, commandObject) {
   try {

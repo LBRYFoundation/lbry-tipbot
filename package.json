@@ -17,16 +17,18 @@
   "scripts": {
     "prettier": "prettier * --write",
     "build": "babel bot -d dist",
-    "prod": "babel bot -d dist & node dist/bot.js"
+    "prod": "babel bot -d dist & node dist/bot.js",
+    "lint": "prettier --write bot/**/*.js",
+    "precommit": "prettier --write bot/**/*.js"
   },
   "devDependencies": {
     "prettier": "1.7.4"
   },
-  "name": "wunderbot-discord",
-  "version": "0.0.1",
-  "description": "LBRYs bot for Discord",
+  "name": "lbry-tipbot",
+  "version": "0.0.2",
+  "description": "LBRYs tipbot for Discord",
   "main": "app.js",
-  "repository": "https://github.com/filipnyquist/wunderbot-disc",
+  "repository": "https://github.com/lbryio/lbry-tipbot",
   "author": "filipnyquist <filip@lbry.io>",
   "license": "MIT"
 }
