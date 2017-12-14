@@ -15,7 +15,7 @@ exports.tip = {
         let tipper = msg.author.id,
             words = msg.content.trim().split(' ').filter( function(n){return n !== "";} ),
             subcommand = words.length >= 2 ? words[1] : 'help';
-	switch subcommand {
+    switch (subcommand) {
 		case 'help': doHelp(msg); break;
 		case 'balance': doBalance(msg, tipper); break;
 		case 'deposit': doDeposit(msg, tipper); break;
@@ -23,7 +23,7 @@ exports.tip = {
 		default: doTip(msg, tipper, words);
 	}
 }
-
+}
 
 function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function(err, balance) {
