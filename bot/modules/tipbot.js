@@ -114,11 +114,9 @@ function doTip(message, tipper, words) {
 
 function doHelp(message) {
   if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Please use <#369896313082478594> or DMs to talk to bots.');
-    return;
+    message.reply('Sent you help via DM! Please use <#369896313082478594> or DMs to talk to bots.');
   }
-  message.reply('Sent you help via DM!');
-  message.author.send('**!tip**\n    !tip balance: get your balance\n    !tip deposit: get adress for your deposits\n    !tip withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    !tip <user> <amount>: send <amount> credits to <user>');
+  message.author.send('**!tip**\n    balance: get your balance\n    deposit: get address for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    [private] <user> <amount>: mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.\n    Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.');
 }
 
 
@@ -138,7 +136,9 @@ function sendLbc(message, tipper, member, amount, privacyFlag) {
             'DM me `!tip` for tipbot instructions.'
           if (privacyFlag) {
             message.author.send(imessage);
-            member.send(imessage);
+            if (message.author.id != member.id) {
+              member.send(imessage);
+            }
           } else {
             message.reply(imessage);
           }
