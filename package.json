@@ -8,8 +8,8 @@
     "discord.js": "^11.2.1",
     "embed-creator": "^1.1.4",
     "jsonpath": "^0.2.12",
-    "moment": "^2.19.1",
-    "mongoose": "^4.12.3",
+    "moment": "^2.20.1",
+    "mongoose": "^4.13.7",
     "node-config": "^0.0.2",
     "numeral": "^2.0.6",
     "request": "^2.83.0"
@@ -25,7 +25,7 @@
     "prettier": "1.7.4"
   },
   "name": "lbry-tipbot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "LBRYs tipbot for Discord",
   "main": "app.js",
   "repository": "https://github.com/lbryio/lbry-tipbot",
