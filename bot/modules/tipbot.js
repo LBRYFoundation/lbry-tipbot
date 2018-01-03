@@ -102,9 +102,8 @@ function doTip(message, tipper, words) {
     return;
   }
 
-  if (message.mentions.members.first().id) {
-    let member = message.mentions.members.first()
-    sendLbc(message, tipper, member, amount, prv);
+  if (message.mentions.users.first().id) {
+    sendLbc(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
   }
   else {
     message.reply('Sorry, I could not find a user in your tip...');
@@ -120,8 +119,8 @@ function doHelp(message) {
 }
 
 
-function sendLbc(message, tipper, member, amount, privacyFlag) {
-  getAddress(member.id.replace('!', ''), function (err, address) {
+function sendLbc(message, tipper, recipient, amount, privacyFlag) {
+  getAddress(recipient, function (err, address) {
     if (err) {
       message.reply(err.message);
     }
@@ -132,12 +131,12 @@ function sendLbc(message, tipper, member, amount, privacyFlag) {
         }
         else {
           var imessage =
-            'Wubba lubba dub dub! <@' + tipper + '> tipped <@' + member.id + '> ' + amount + ' LBC (' + txLink(txId) + '). ' +
+            'Wubba lubba dub dub! <@' + tipper + '> tipped <@' + recipient + '> ' + amount + ' LBC (' + txLink(txId) + '). ' +
             'DM me `!tip` for tipbot instructions.'
           if (privacyFlag) {
             message.author.send(imessage);
-            if (message.author.id != member.id) {
-              member.send(imessage);
+            if (message.author.id != message.mentions.users.first().id) {
+              message.mentions.users.first().send(imessage);
             }
           } else {
             message.reply(imessage);
