@@ -10,20 +10,41 @@ exports.commands = [
 ]
 exports.tip = {
   usage: "<subcommand>",
-  description: 'balance: get your balance\n    deposit: get address for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    [private] <user> <amount>: mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.\n Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.',
+  description: '\t[help]\n\t\tGet this message\n\tbalance\n\t\tGet your balance\n\tdeposit\n\t\tGet address for your deposits\n\twithdraw ADDRESS AMOUNT\n\t\tWithdraw AMOUNT credits to ADDRESS\n\t[private] <user> <amount>\n\t\tMention a user with @ and then the amount to tip them, or put private before the user to tip them privately.\nKey: [] : Optionally include contained keyword, <> : Replace with appropriate value.',
   process: async function (bot, msg, suffix) {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content.trim().split(' ').filter(function (n) { return n !== ""; }),
-      subcommand = words.length >= 2 ? words[1] : 'help';
+      subcommand = words.length >= 2 ? words[1] : 'help',
+      helpmsgparts = [['[help]', 'Get this message'],
+                      ['balance', 'Get your balance'],
+                      ['deposit', 'Get address for your deposits'],
+                      ['withdraw ADDRESS AMOUNT', 'Withdraw AMOUNT credits to ADDRESS'],
+                      ['[private] <user> <amount>', 'Mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.']],
+      helpmsg = '```**!tip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.```',
+      channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
     switch (subcommand) {
-      case 'help': doHelp(msg); break;
+      case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
       case 'balance': doBalance(msg, tipper); break;
-      case 'deposit': doDeposit(msg, tipper); break;
-      case 'withdraw': doWithdraw(msg, tipper, words); break;
-      default: doTip(msg, tipper, words);
+      case 'deposit': privateOrSandboxOnly(msg, channelwarning, doDeposit, [tipper]); break;
+      case 'withdraw': privateOrSandboxOnly(msg, channelwarning, doWithdraw, [tipper, words, helpmsg]); break;
+      default: doTip(msg, tipper, words, helpmsg);
     }
   }
 }
+
+function privateOrSandboxOnly(message, wrongchannelmsg, fn, args) {
+  if (!inPrivateOrBotSandbox(message)) {
+    message.reply(wrongchannelmsg);
+    return;
+  }
+  fn.apply(null, [message, ...args]);
+}
+
+
+function doHelp(message, helpmsg) {
+  message.author.send(helpmsg);
+}
+
 
 function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function (err, balance) {
@@ -38,10 +59,6 @@ function doBalance(message, tipper) {
 
 
 function doDeposit(message, tipper) {
-  if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Please use <#369896313082478594> or DMs to talk to bots.');
-    return;
-  }
   getAddress(tipper, function (err, address) {
     if (err) {
       message.reply('Error getting deposit address');
@@ -53,18 +70,14 @@ function doDeposit(message, tipper) {
 }
 
 
-function doWithdraw(message, tipper, words) {
-  if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Please use <#369896313082478594> or DMs to talk to bots.');
-    return;
-  }
+function doWithdraw(message, tipper, words, helpmsg) {
   if (words.length < 4) {
-    doHelp(message);
+    doHelp(message, helpmsg);
     return;
   }
 
   var address = words[2],
-    amount = getValidatedAmount(words[3]);
+      amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
     message.reply('I dont know how to withdraw that many credits');
@@ -82,9 +95,9 @@ function doWithdraw(message, tipper, words) {
 }
 
 
-function doTip(message, tipper, words) {
+function doTip(message, tipper, words, helpmsg) {
   if (words.length < 3 || !words) {
-    doHelp(message);
+    doHelp(message, helpmsg);
     return;
   }
 
@@ -108,14 +121,6 @@ function doTip(message, tipper, words) {
   else {
     message.reply('Sorry, I could not find a user in your tip...');
   }
-}
-
-
-function doHelp(message) {
-  if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Sent you help via DM! Please use <#369896313082478594> or DMs to talk to bots.');
-  }
-  message.author.send('**!tip**\n    balance: get your balance\n    deposit: get address for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    [private] <user> <amount>: mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.\n    Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.');
 }
 
 
@@ -169,6 +174,7 @@ function getAddress(userId, cb) {
   });
 }
 
+
 function inPrivateOrBotSandbox(msg) {
   if ((msg.channel.type == 'dm') || (msg.channel.id === '369896313082478594')) {
     return true;
@@ -176,6 +182,7 @@ function inPrivateOrBotSandbox(msg) {
     return false;
   }
 }
+
 
 function getValidatedAmount(amount) {
   amount = amount.trim();
@@ -188,4 +195,10 @@ function getValidatedAmount(amount) {
 
 function txLink(txId) {
   return "<https://explorer.lbry.io/tx/" + txId + ">";
+}
+
+
+function formatDescriptions(msgparts) {
+  return msgparts.map(elem => '\t' + elem[0] + '\n\t\t' + elem[1] + '\n')
+                 .join('');
 }
