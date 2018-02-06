@@ -6,7 +6,9 @@ config = config.get('lbrycrd');
 const lbry = new bitcoin.Client(config);
 
 exports.commands = [
-  "tip"
+  "tip",
+  "multitip",
+  "roletip"
 ]
 exports.tip = {
   usage: "<subcommand>",
@@ -31,6 +33,46 @@ exports.tip = {
     }
   }
 }
+
+exports.multitip = {
+  usage: "<subcommand>",
+  description: '\t[help]\n\t\tGet this message\n\t<user>+ <amount>\n\t\tMention one or more users in a row, seperated by spaces, then an amount that each mentioned user will receive\n\tprivate <user>+ <amount>\n\t\tPut private before the user list to have each user tipped privately, without revealing other users tipped\nKey: [] : Optionally include contained keyword, <> : Replace with the appropriate value, + : Value can be repeated for multiple entries',
+  process: async function (bot, msg, suffix) {
+    let tipper = msg.author.id.replace('!', ''),
+        words = msg.content.trim().split(' ').filter(function (n) { return n !== ""; }),
+        subcommand = words.length >= 2 ? words[1] : 'help',
+        helpmsgparts = [['[help]', 'Get this message'],
+                        ['<user>+ <amount>', 'Mention one or more users in a row, seperated by spaces, then an amount that each mentioned user will receive.'],
+                        ['private <user>+ <amount>','Put private before the user list to have each user tipped privately, without revealing other users tipped.']],
+        helpmsg = '```**!multitip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with the appropriate value, + : Value can be repeated for multiple entries.```',
+        channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
+    switch(subcommand) {
+      case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
+      default: doMultiTip(msg, tipper, words, helpmsg); break;
+    }
+  }
+}
+
+
+exports.roletip = {
+  usage: "<subcommand>",
+  description: '\t[help]\n\t\tGet this message\n\t<role> <amount>\n\t\tMention a single role, then an amount that each user in that role will receive\n\tprivate <role> <amount>\n\t\tPut private before the role to have each user tipped privately, without revealing other users tipped\nKey: [] : Optionally include contained keyword, <> : Replace with the appropriate value',
+  process: async function (bot, msg, suffix) {
+    let tipper = msg.author.id.replace('!', ''),
+        words = msg.content.trim().split(' ').filter(function (n) { return n !== ""; }),
+        subcommand = words.length >= 2 ? words[1] : 'help',
+        helpmsgparts = [['[help]', 'Get this message'],
+                        ['<role> <amount>', 'Mention a single role, then an amount that each user in that role will receive.'],
+                        ['private <role> <amount>','Put private before the role to have each user tipped privately, without revealing other users tipped.']],
+        helpmsg = '```**!roletip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with the appropriate value.```',
+        channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
+    switch(subcommand) {
+      case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
+      default: doRoleTip(msg, tipper, words, helpmsg); break;
+    }
+  }
+}
+
 
 function privateOrSandboxOnly(message, wrongchannelmsg, fn, args) {
   if (!inPrivateOrBotSandbox(message)) {
@@ -101,8 +143,8 @@ function doTip(message, tipper, words, helpmsg) {
     return;
   }
 
-  let prv = 0;
-  let amountOffset = 2;
+  var prv = 0;
+  var amountOffset = 2;
   if (words.length >= 4 && words[1] === 'private') {
     prv = 1;
     amountOffset = 3;
@@ -121,6 +163,89 @@ function doTip(message, tipper, words, helpmsg) {
   else {
     message.reply('Sorry, I could not find a user in your tip...');
   }
+}
+
+
+function doMultiTip(message, tipper, words, helpmsg) {
+  if (!words) {
+    doHelp(message, helpmsg);
+    return;
+  }
+  if (words.length < 4) {
+    doTip(message, tipper, words, helpmsg);
+    return;
+  }
+  var prv = 0;
+  if (words.length >= 5 && words[1] === 'private') {
+    prv = 1;
+  }
+  let [userIDs, amount] = findUserIDsAndAmount(message, words, prv + 1);
+  if (amount == null) {
+    message.reply('I dont know how to tip that many credits');
+    return;
+  }
+  if (!userIDs) {
+    message.reply('Sorry, I could not find a user in your tip...');
+    return;
+  }
+  for (var i = 0; i < userIDs.length; i++) {
+    sendLbc(message, tipper, userIDs[i], amount, prv);
+  }
+}
+
+
+function doRoleTip(message, tipper, words, helpmsg) {
+  if (!words || words.length < 3) {
+    doHelp(message, helpmsg);
+    return;
+  }
+  var prv = 0;
+  var amountOffset = 2;
+  if (words.length >= 4 && words[1] === 'private') {
+    prv = 1;
+    amountOffset = 3;
+  }
+  let amount = getValidatedAmount(words[amountOffset]);
+  if (amount == null) {
+    message.reply('I dont know how to tip that many credits');
+    return;
+  }
+  if (message.mentions.roles.first().id) {
+    if (message.mentions.roles.first().members.first().id) {
+      let userIDs = message.mentions.roles.first().members.map(member => member.user.id.replace('!', ''));
+      for (var i = 0; i < userIDs; i++) {
+        sendLbc(message, tipper, userIDs[i], amount, prv);
+      }
+      return;
+    }
+    else {
+      message.reply('Sorry, I could not find any users to tip in that role...');
+      return;
+    }
+  }
+  else {
+    message.reply('Sorry, I could not find any roles in your tip...');
+    return;
+  }
+}
+
+
+function findUserIDsAndAmount(message, words, startOffset) {
+  var idList = [];
+  var amount = null;
+  var count = 0;
+  
+  for (var i = startOffset; i < words.length; i++) {
+    if (message.mentions.USERS_PATTERN.test(words[i])) {
+      count++;
+    }
+    else {
+      amount = getValidatedAmount(words[i]);
+      if (amount == null) break;
+    }
+  }
+  if (count > 0) idList = message.mentions.users.first(count).forEach(function(user) { return user.id.replace('!', ''); });
+  return [idList, amount];
 }
 
 
