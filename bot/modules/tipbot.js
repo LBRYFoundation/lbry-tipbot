@@ -4,6 +4,7 @@ const bitcoin = require('bitcoin');
 let config = require('config');
 config = config.get('lbrycrd');
 const lbry = new bitcoin.Client(config);
+let moderation = config.get('moderation');
 
 exports.commands = [
   "tip",
@@ -17,13 +18,13 @@ exports.tip = {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content.trim().split(' ').filter(function (n) { return n !== ""; }),
       subcommand = words.length >= 2 ? words[1] : 'help',
-      helpmsgparts = [['[help]', 'Get this message'],
-                      ['balance', 'Get your balance'],
-                      ['deposit', 'Get address for your deposits'],
+      helpmsgparts = [['[help]', 'Get this message.'],
+                      ['balance', 'Get your balance.'],
+                      ['deposit', 'Get address for your deposits.'],
                       ['withdraw ADDRESS AMOUNT', 'Withdraw AMOUNT credits to ADDRESS'],
                       ['[private] <user> <amount>', 'Mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.']],
       helpmsg = '```**!tip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.```',
-      channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
+      channelwarning = 'Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.';
     switch (subcommand) {
       case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
       case 'balance': doBalance(msg, tipper); break;
@@ -41,11 +42,11 @@ exports.multitip = {
     let tipper = msg.author.id.replace('!', ''),
         words = msg.content.trim().split(' ').filter(function (n) { return n !== ""; }),
         subcommand = words.length >= 2 ? words[1] : 'help',
-        helpmsgparts = [['[help]', 'Get this message'],
+        helpmsgparts = [['[help]', 'Get this message.'],
                         ['<user>+ <amount>', 'Mention one or more users in a row, seperated by spaces, then an amount that each mentioned user will receive.'],
                         ['private <user>+ <amount>','Put private before the user list to have each user tipped privately, without revealing other users tipped.']],
         helpmsg = '```**!multitip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with the appropriate value, + : Value can be repeated for multiple entries.```',
-        channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
+        channelwarning = 'Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.';
     switch(subcommand) {
       case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
       default: doMultiTip(msg, tipper, words, helpmsg); break;
@@ -65,7 +66,7 @@ exports.roletip = {
                         ['<role> <amount>', 'Mention a single role, then an amount that each user in that role will receive.'],
                         ['private <role> <amount>','Put private before the role to have each user tipped privately, without revealing other users tipped.']],
         helpmsg = '```**!roletip**\n' + formatDescriptions(helpmsgparts) + 'Key: [] : Optionally include contained keyword, <> : Replace with the appropriate value.```',
-        channelwarning = 'Please use <#369896313082478594> or DMs to talk to bots.';
+        channelwarning = 'Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.';
     switch(subcommand) {
       case 'help': privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]); break;
       default: doRoleTip(msg, tipper, words, helpmsg); break;
@@ -91,7 +92,7 @@ function doHelp(message, helpmsg) {
 function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function (err, balance) {
     if (err) {
-      message.reply('Error getting balance');
+      message.reply('Error getting balance.');
     }
     else {
       message.reply('You have *' + balance + '* LBC');
@@ -103,7 +104,7 @@ function doBalance(message, tipper) {
 function doDeposit(message, tipper) {
   getAddress(tipper, function (err, address) {
     if (err) {
-      message.reply('Error getting deposit address');
+      message.reply('Error getting your deposit address.');
     }
     else {
       message.reply('Your address is ' + address);
@@ -122,7 +123,7 @@ function doWithdraw(message, tipper, words, helpmsg) {
       amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply('I dont know how to withdraw that many credits');
+    message.reply('I dont know how to withdraw that many credits...');
     return;
   }
 
@@ -131,7 +132,7 @@ function doWithdraw(message, tipper, words, helpmsg) {
       message.reply(err.message);
     }
     else {
-      message.reply('You withdrew ' + amount + ' to ' + address + ' (' + txLink(txId) + ')');
+      message.reply('You withdrew ' + amount + ' to ' + address + ' (' + txLink(txId) + ').');
     }
   });
 }
@@ -153,7 +154,7 @@ function doTip(message, tipper, words, helpmsg) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    message.reply('I dont know how to tip that many credits');
+    message.reply('I dont know how to tip that many credits...');
     return;
   }
 
@@ -181,7 +182,7 @@ function doMultiTip(message, tipper, words, helpmsg) {
   }
   let [userIDs, amount] = findUserIDsAndAmount(message, words, prv + 1);
   if (amount == null) {
-    message.reply('I dont know how to tip that many credits');
+    message.reply('I don\'t know how to tip that many credits...');
     return;
   }
   if (!userIDs) {
@@ -207,7 +208,7 @@ function doRoleTip(message, tipper, words, helpmsg) {
   }
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount == null) {
-    message.reply('I dont know how to tip that many credits');
+    message.reply('I don\'t know how to tip that many credits...');
     return;
   }
   if (message.mentions.roles.first().id) {
@@ -234,7 +235,7 @@ function findUserIDsAndAmount(message, words, startOffset) {
   var idList = [];
   var amount = null;
   var count = 0;
-  
+
   for (var i = startOffset; i < words.length; i++) {
     if (message.mentions.USERS_PATTERN.test(words[i])) {
       count++;
@@ -301,7 +302,7 @@ function getAddress(userId, cb) {
 
 
 function inPrivateOrBotSandbox(msg) {
-  if ((msg.channel.type == 'dm') || (msg.channel.id === '369896313082478594')) {
+  if ((msg.channel.type == 'dm') || (msg.channel.id === moderation.sandboxchannel)) {
     return true;
   } else {
     return false;
