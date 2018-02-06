@@ -4,6 +4,7 @@ const bitcoin = require('bitcoin');
 let config = require('config');
 config = config.get('lbrycrd');
 const lbry = new bitcoin.Client(config);
+let moderation = config.get('moderation');
 
 exports.commands = [
   "tip"
@@ -28,10 +29,10 @@ exports.tip = {
 function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function (err, balance) {
     if (err) {
-      message.reply('Error getting balance');
+      message.reply('Error getting balance.');
     }
     else {
-      message.reply('You have *' + balance + '* LBC');
+      message.reply('You have *' + balance + '* LBC.');
     }
   });
 }
@@ -39,15 +40,15 @@ function doBalance(message, tipper) {
 
 function doDeposit(message, tipper) {
   if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Please use <#369896313082478594> or DMs to talk to bots.');
+    message.reply('Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.');
     return;
   }
   getAddress(tipper, function (err, address) {
     if (err) {
-      message.reply('Error getting deposit address');
+      message.reply('Error getting your deposit address.');
     }
     else {
-      message.reply('Your address is ' + address);
+      message.reply('Your address is ' + address + '.');
     }
   });
 }
@@ -55,7 +56,7 @@ function doDeposit(message, tipper) {
 
 function doWithdraw(message, tipper, words) {
   if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Please use <#369896313082478594> or DMs to talk to bots.');
+    message.reply('Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.');
     return;
   }
   if (words.length < 4) {
@@ -67,7 +68,7 @@ function doWithdraw(message, tipper, words) {
     amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply('I dont know how to withdraw that many credits');
+    message.reply('I don\'t know how to withdraw that many credits...');
     return;
   }
 
@@ -98,7 +99,7 @@ function doTip(message, tipper, words) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    message.reply('I dont know how to tip that many credits');
+    message.reply('I don\'t know how to tip that many credits');
     return;
   }
 
@@ -113,9 +114,9 @@ function doTip(message, tipper, words) {
 
 function doHelp(message) {
   if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Sent you help via DM! Please use <#369896313082478594> or DMs to talk to bots.');
+    message.reply('Sent you help via DM! Please use <'+ moderation.sandboxchannel + '> or DMs to talk to bots.');
   }
-  message.author.send('**!tip**\n    balance: get your balance\n    deposit: get address for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    [private] <user> <amount>: mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.\n    Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.');
+  message.author.send('**!tip**\n    balance: get your balance\n    deposit: get an address for your deposits\n    withdraw ADDRESS AMOUNT: withdraw AMOUNT credits to ADDRESS\n    [private] <user> <amount>: mention a user with an @ and then the amount to tip them, or put private before the user to tip them privately.\n    Key: [] : Optionally include contained keyword, <> : Replace with appropriate value.');
 }
 
 
@@ -170,7 +171,7 @@ function getAddress(userId, cb) {
 }
 
 function inPrivateOrBotSandbox(msg) {
-  if ((msg.channel.type == 'dm') || (msg.channel.id === '369896313082478594')) {
+  if ((msg.channel.type == 'dm') || (msg.channel.id === moderation.sandboxchannel)) {
     return true;
   } else {
     return false;
