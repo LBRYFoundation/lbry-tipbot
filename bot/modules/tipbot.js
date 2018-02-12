@@ -220,7 +220,7 @@ function doMultiTip(message, tipper, words, helpmsg) {
     return;
   }
   for (var i = 0; i < userIDs.length; i++) {
-    sendLBC(message, tipper, userIDs[i], amount, prv);
+    sendLBC(message, tipper, userIDs[i].toString(), amount, prv);
   }
 }
 
@@ -267,24 +267,22 @@ function findUserIDsAndAmount(message, words, prv) {
   var count = 0;
   var startOffset = 1;
   if (prv) startOffset = 2;
-  var userPattern = message.mentions.USERS_PATTERN;
-  if (!userPattern || !userPattern.test('<@123456789>')) userPattern = new Regex(/<@!?[0-9]+>/);
-
+  var regex = new RegExp(/<@!?[0-9]+>/)
   for (var i = startOffset; i < words.length; i++) {
-    if (userPattern.test(words[i])) {
+    if (regex.test(words[i])) {
       count++;
-    }
-    else {
-      amount = getValidatedAmount(words[i]);
+      idList.push(words[i].match(/[0-9]+/));
+    } else {
+      amount = getValidatedAmount(words[Number(count)+1]);
       if (amount == null) break;
+      break
     }
   }
-  if (count > 0) idList = message.mentions.users.first(count).forEach(function(user) { return user.id.replace('!', ''); });
   return [idList, amount];
 }
 
 
-function sendLbc(message, tipper, recipient, amount, privacyFlag) {
+function sendLBC(message, tipper, recipient, amount, privacyFlag) {
   getAddress(recipient, function (err, address) {
     if (err) {
       message.reply(err.message).then(message => message.delete(5000));
