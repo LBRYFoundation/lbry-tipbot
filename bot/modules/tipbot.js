@@ -274,8 +274,7 @@ function findUserIDsAndAmount(message, words, prv) {
       idList.push(words[i].match(/[0-9]+/));
     } else {
       amount = getValidatedAmount(words[Number(count)+1]);
-      if (amount == null) break;
-      break
+      break;
     }
   }
   return [idList, amount];
@@ -283,12 +282,12 @@ function findUserIDsAndAmount(message, words, prv) {
 
 
 function sendLBC(message, tipper, recipient, amount, privacyFlag) {
-  getAddress(recipient, function (err, address) {
+  getAddress(recipient.toString(), function (err, address) {
     if (err) {
       message.reply(err.message).then(message => message.delete(5000));
     }
     else {
-      lbry.sendFrom(tipper, address, amount, 1, null, null, function (err, txId) {
+      lbry.sendFrom(tipper, address, Number(amount), 1, null, null, function (err, txId) {
         if (err) {
           message.reply(err.message).then(message => message.delete(5000));
         }
@@ -299,8 +298,9 @@ function sendLBC(message, tipper, recipient, amount, privacyFlag) {
             var authmsg = 'You have just privately tipped <@' + recipient + '> ' + amount + ' LBC.\n' + tx + msgtail;
             message.author.send(authmsg);
             if (message.author.id != message.mentions.users.first().id) {
+              var usr = message.guild.members.find('id', recipient).user;
               var recipientmsg = 'You have just been privately tipped ' + amount + ' LBC by <@' + tipper + '>.\n' + tx + msgtail;
-              message.mentions.users.first().send(recipientmsg);
+              usr.send(recipientmsg);
             }
           } else {
             var generalmsg =
