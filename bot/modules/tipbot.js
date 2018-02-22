@@ -241,7 +241,7 @@ function doMultiTip(message, tipper, words, helpmsg) {
   }
   let [userIDs, amount] = findUserIDsAndAmount(message, words, prv);
   if (amount == null) {
-    message.reply("I don't know how to tip that many coins...").then(message => message.delete(5000));
+    message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
     return;
   }
   if (!userIDs) {
@@ -266,7 +266,7 @@ function doRoleTip(message, tipper, words, helpmsg) {
   }
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount == null) {
-    message.reply("I don't know how to tip that many coins...").then(message => message.delete(5000));
+    message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
     return;
   }
   if (message.mentions.roles.first().id) {
