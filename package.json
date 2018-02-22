@@ -15,11 +15,11 @@
     "request": "^2.83.0"
   },
   "scripts": {
-    "prettier": "prettier --write bot/**/*.js --single-quote --print-width 240",
+    "prettier": "prettier --write '{bot,.}/**/*.{js,json}' --single-quote --print-width 240",
     "build": "babel bot -d dist",
     "prod": "babel bot -d dist & node dist/bot.js",
-    "lint": "prettier --write bot/**/*.js --single-quote --print-width 240",
-    "precommit": "prettier --write bot/**/*.js --single-quote --print-width 240"
+    "lint": "prettier --write '{bot,.}/**/*.{js,json}' --single-quote --print-width 240",
+    "precommit": "prettier --write '{bot,.}/**/*.{js,json}' --single-quote --print-width 240"
   },
   "devDependencies": {
     "prettier": "1.7.4"

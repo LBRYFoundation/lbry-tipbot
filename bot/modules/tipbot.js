@@ -47,7 +47,7 @@ function doBalance(message, tipper) {
     if (err) {
       message.reply('Error getting balance');
     } else {
-      message.reply('You have *' + balance + '* LBC');
+      message.reply(`You have *${balance}* LBC`);
     }
   });
 }
@@ -60,7 +60,7 @@ function doDeposit(message, tipper) {
     if (err) {
       message.reply('Error getting deposit address');
     } else {
-      message.reply('Your address is ' + address);
+      message.reply(`Your address is ${address}`);
     }
   });
 }
@@ -115,7 +115,7 @@ function doTip(message, tipper, words) {
 
 function doHelp(message) {
   if (!inPrivateOrBotSandbox(message)) {
-    message.reply('Sent you help via DM! Please use <#369896313082478594> or DMs to talk to bots.');
+    message.reply(`Sent you help via DM! Please use <#${sandboxChannel}> or DMs to talk to bots.`);
   }
   message.author.send(`**!tip**
     balance: get your balance
