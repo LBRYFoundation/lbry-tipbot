@@ -7,7 +7,7 @@ let regex = require('regex');
 let lbrycrdConfig = config.get('lbrycrd');
 const lbry = new bitcoin.Client(lbrycrdConfig);
 
-exports.commands = ['tip', 'multitip', 'roletip', 'tipcommands'];
+exports.commands = ['tip', 'multitip', 'roletip', 'tips'];
 exports.tip = {
   usage: '<subcommand>',
   description: 'Tip a given user with an amount of LBC or perform wallet specific operations.',
@@ -34,7 +34,7 @@ exports.tip = {
           author: { name: '!tip' }
         }
       },
-      channelwarning = 'Please use <' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -78,7 +78,7 @@ exports.multitip = {
           author: { name: '!multitip' }
         }
       },
-      channelwarning = 'Please use <' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -114,7 +114,7 @@ exports.roletip = {
           author: { name: '!roletip' }
         }
       },
-      channelwarning = `Please use <${spamchannel}> or DMs to talk to bots.`;
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -126,7 +126,7 @@ exports.roletip = {
   }
 };
 
-exports.tipcommands = {
+exports.tips = {
   usage: '',
   description: 'Lists all available tipbot commands with brief descriptions for each one.',
   process: async function(bot, msg, suffix) {
@@ -134,7 +134,7 @@ exports.tipcommands = {
         ['!tip', 'Tip a given user with an amount of LBC or perform wallet specific operations.'],
         ['!multitip', 'Tip multiple users simultaneously for the same amount of LBC each.'],
         ['!roletip', 'Tip every user in a given role the same amount of LBC.'],
-        ['!tipcommands', 'Lists all available tipbot commands with brief descriptions for each one.']
+        ['!tips', 'Lists all available tipbot commands with brief descriptions for each one.']
       ],
       helpmsg = {
         embed: {
@@ -221,7 +221,7 @@ function doTip(message, tipper, words, helpmsg) {
   }
 
   if (message.mentions.users.first().id) {
-    return sendLbc(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
+    return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
   }
   message.reply('Sorry, I could not find a user in your tip...');
 }
