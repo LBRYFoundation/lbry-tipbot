@@ -221,7 +221,7 @@ function doTip(message, tipper, words, helpmsg) {
   }
 
   if (message.mentions.users.first().id) {
-    return sendLbc(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
+    return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
   }
   message.reply('Sorry, I could not find a user in your tip...');
 }
