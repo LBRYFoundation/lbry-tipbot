@@ -34,7 +34,7 @@ exports.tip = {
           author: { name: '!tip' }
         }
       },
-      channelwarning = 'Please use <' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -78,7 +78,7 @@ exports.multitip = {
           author: { name: '!multitip' }
         }
       },
-      channelwarning = 'Please use <' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -114,7 +114,7 @@ exports.roletip = {
           author: { name: '!roletip' }
         }
       },
-      channelwarning = `Please use <${spamchannel}> or DMs to talk to bots.`;
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
