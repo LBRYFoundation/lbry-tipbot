@@ -7,7 +7,7 @@ let regex = require('regex');
 let lbrycrdConfig = config.get('lbrycrd');
 const lbry = new bitcoin.Client(lbrycrdConfig);
 
-exports.commands = ['tip', 'multitip', 'roletip', 'tipcommands'];
+exports.commands = ['tip', 'multitip', 'roletip', 'tips'];
 exports.tip = {
   usage: '<subcommand>',
   description: 'Tip a given user with an amount of LBC or perform wallet specific operations.',
@@ -126,7 +126,7 @@ exports.roletip = {
   }
 };
 
-exports.tipcommands = {
+exports.tips = {
   usage: '',
   description: 'Lists all available tipbot commands with brief descriptions for each one.',
   process: async function(bot, msg, suffix) {
@@ -134,7 +134,7 @@ exports.tipcommands = {
         ['!tip', 'Tip a given user with an amount of LBC or perform wallet specific operations.'],
         ['!multitip', 'Tip multiple users simultaneously for the same amount of LBC each.'],
         ['!roletip', 'Tip every user in a given role the same amount of LBC.'],
-        ['!tipcommands', 'Lists all available tipbot commands with brief descriptions for each one.']
+        ['!tips', 'Lists all available tipbot commands with brief descriptions for each one.']
       ],
       helpmsg = {
         embed: {
@@ -313,7 +313,7 @@ function sendLBC(message, tipper, recipient, amount, privacyFlag) {
         } else {
           let tx = txLink(txId);
           let msgtail = `
-DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tipcommands\` for all available commands`;
+DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands`;
           if (privacyFlag) {
             let authmsg = `You have just privately tipped <@${recipient}> ${amount} LBC.
 ${tx}${msgtail}`;
