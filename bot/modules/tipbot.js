@@ -220,7 +220,7 @@ function doTip(message, tipper, words, helpmsg) {
     return message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
   }
 
-  if (message.mentions.users.first().id) {
+  if (message.mentions.users.first() && message.mentions.users.first().id) {
     return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
   }
   message.reply('Sorry, I could not find a user in your tip...');
