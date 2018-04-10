@@ -316,11 +316,11 @@ function sendLBC(message, tipper, recipient, amount, privacyFlag) {
 DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands`;
           if (privacyFlag) {
             let usr = message.guild.members.find('id', recipient).user;
-            let authmsg = `You have just privately tipped @${usr.username}#${usr.tag} ${amount} LBC.
+            let authmsg = `You have just privately tipped @${usr.tag} ${amount} LBC.
 ${tx}${msgtail}`;
             message.author.send(authmsg);
             if (message.author.id !== message.mentions.users.first().id) {
-              let recipientmsg = `You have just been privately tipped ${amount} LBC by @${message.author.username}#${message.author.tag}.
+              let recipientmsg = `You have just been privately tipped ${amount} LBC by @${message.author.tag}.
 ${tx}${msgtail}`;
               usr.send(recipientmsg);
             }
