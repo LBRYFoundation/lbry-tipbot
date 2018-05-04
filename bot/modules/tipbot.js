@@ -34,7 +34,8 @@ exports.tip = {
           author: { name: '!tip' }
         }
       },
-      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
+      MultiorRole = false;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -49,7 +50,7 @@ exports.tip = {
         privateOrSandboxOnly(msg, channelwarning, doWithdraw, [tipper, words, helpmsg]);
         break;
       default:
-        doTip(msg, tipper, words, helpmsg);
+        doTip(bot, msg, tipper, words, helpmsg, MultiorRole);
     }
   }
 };
@@ -78,13 +79,14 @@ exports.multitip = {
           author: { name: '!multitip' }
         }
       },
-      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
+      MultiorRole = true
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
         break;
       default:
-        doMultiTip(msg, tipper, words, helpmsg);
+        doMultiTip(bot, msg, tipper, words, helpmsg, MultiorRole);
         break;
     }
   }
@@ -114,13 +116,14 @@ exports.roletip = {
           author: { name: '!roletip' }
         }
       },
-      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`,
+      MultiorRole = true
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
         break;
       default:
-        doRoleTip(msg, tipper, words, helpmsg);
+        doRoleTip(bot, msg, tipper, words, helpmsg, MultiorRole);
         break;
     }
   }
@@ -202,7 +205,7 @@ ${txLink(txId)}`);
   });
 }
 
-function doTip(message, tipper, words, helpmsg) {
+function doTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   if (words.length < 3 || !words) {
     return doHelp(message, helpmsg);
   }
@@ -221,18 +224,18 @@ function doTip(message, tipper, words, helpmsg) {
   }
 
   if (message.mentions.users.first() && message.mentions.users.first().id) {
-    return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
+    return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv, MultiorRole);
   }
   message.reply('Sorry, I could not find a user in your tip...');
 }
 
-function doMultiTip(message, tipper, words, helpmsg) {
+function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   if (!words) {
     doHelp(message, helpmsg);
     return;
   }
   if (words.length < 4) {
-    doTip(message, tipper, words, helpmsg);
+    doTip(bot, message, tipper, words, helpmsg, MultiorRole);
     return;
   }
   let prv = false;
@@ -249,37 +252,47 @@ function doMultiTip(message, tipper, words, helpmsg) {
     return;
   }
   for (let i = 0; i < userIDs.length; i++) {
-    sendLBC(message, tipper, userIDs[i].toString(), amount, prv);
+    sendLBC(message, tipper, userIDs[i].toString(), amount, prv, MultiorRole);
   }
 }
 
-function doRoleTip(message, tipper, words, helpmsg) {
+function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   if (!words || words.length < 3) {
     doHelp(message, helpmsg);
     return;
   }
-  let prv = false;
-  let amountOffset = 2;
+  var prv = false;
+  var amountOffset = 2;
   if (words.length >= 4 && words[1] === 'private') {
     prv = true;
     amountOffset = 3;
   }
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount == null) {
-    message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
+    message
+      .reply("I don't know how to tip that many LBC coins...")
+      .then(message => message.delete(10000));
     return;
   }
   if (message.mentions.roles.first().id) {
     if (message.mentions.roles.first().members.first().id) {
-      let userIDs = message.mentions.roles.first().members.map(member => member.user.id.replace('!', ''));
-      for (let i = 0; i < userIDs; i++) {
-        sendLBC(message, tipper, userIDs[i].toString(), amount, prv);
+      let userIDs = message.mentions.roles
+        .first()
+        .members.map(member => member.user.id.replace('!', ''));
+      for (var i = 0; i < userIDs.length; i++) {
+        sendLBC(bot, message, tipper, userIDs[i], amount, prv, MultiorRole);
       }
     } else {
-      message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete(5000));
+      message
+        .reply('Sorry, I could not find any users to tip in that role...')
+        .then(message => message.delete(10000));
+      return;
     }
   } else {
-    message.reply('Sorry, I could not find any roles in your tip...').then(message => message.delete(5000));
+    message
+      .reply('Sorry, I could not find any roles in your tip...')
+      .then(message => message.delete(10000));
+    return;
   }
 }
 
@@ -302,7 +315,7 @@ function findUserIDsAndAmount(message, words, prv) {
   return [idList, amount];
 }
 
-function sendLBC(message, tipper, recipient, amount, privacyFlag) {
+function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRole) {
   getAddress(recipient.toString(), function(err, address) {
     if (err) {
       message.reply(err.message).then(message => message.delete(5000));
