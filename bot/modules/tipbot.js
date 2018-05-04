@@ -34,7 +34,7 @@ exports.tip = {
           author: { name: '!tip' }
         }
       },
-      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
       MultiorRole = false;
     switch (subcommand) {
       case 'help':
@@ -79,7 +79,7 @@ exports.multitip = {
           author: { name: '!multitip' }
         }
       },
-      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.';
+      channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
       MultiorRole = true
     switch (subcommand) {
       case 'help':
@@ -116,7 +116,7 @@ exports.roletip = {
           author: { name: '!roletip' }
         }
       },
-      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`;
+      channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`,
       MultiorRole = true
     switch (subcommand) {
       case 'help':
