@@ -80,7 +80,7 @@ exports.multitip = {
         }
       },
       channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
-      MultiorRole = true
+      MultiorRole = true;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -117,7 +117,7 @@ exports.roletip = {
         }
       },
       channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`,
-      MultiorRole = true
+      MultiorRole = true;
     switch (subcommand) {
       case 'help':
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
@@ -224,7 +224,7 @@ function doTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   }
 
   if (message.mentions.users.first() && message.mentions.users.first().id) {
-    return sendLBC(message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv, MultiorRole);
+    return sendLBC(bot, message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv, MultiorRole);
   }
   message.reply('Sorry, I could not find a user in your tip...');
 }
@@ -252,7 +252,7 @@ function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
     return;
   }
   for (let i = 0; i < userIDs.length; i++) {
-    sendLBC(message, tipper, userIDs[i].toString(), amount, prv, MultiorRole);
+    sendLBC(bot, message, tipper, userIDs[i].toString(), amount, prv, MultiorRole);
   }
 }
 
@@ -261,38 +261,28 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
     doHelp(message, helpmsg);
     return;
   }
-  var prv = false;
-  var amountOffset = 2;
+  let prv = false;
+  let amountOffset = 2;
   if (words.length >= 4 && words[1] === 'private') {
     prv = true;
     amountOffset = 3;
   }
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount == null) {
-    message
-      .reply("I don't know how to tip that many LBC coins...")
-      .then(message => message.delete(10000));
+    message.reply("I don't know how to tip that many LBC coins...").then(message => message.delete(10000));
     return;
   }
   if (message.mentions.roles.first().id) {
     if (message.mentions.roles.first().members.first().id) {
-      let userIDs = message.mentions.roles
-        .first()
-        .members.map(member => member.user.id.replace('!', ''));
-      for (var i = 0; i < userIDs.length; i++) {
+      let userIDs = message.mentions.roles.first().members.map(member => member.user.id.replace('!', ''));
+      for (let i = 0; i < userIDs.length; i++) {
         sendLBC(bot, message, tipper, userIDs[i], amount, prv, MultiorRole);
       }
     } else {
-      message
-        .reply('Sorry, I could not find any users to tip in that role...')
-        .then(message => message.delete(10000));
-      return;
+      return message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete(10000));
     }
   } else {
-    message
-      .reply('Sorry, I could not find any roles in your tip...')
-      .then(message => message.delete(10000));
-    return;
+    return message.reply('Sorry, I could not find any roles in your tip...').then(message => message.delete(10000));
   }
 }
 
