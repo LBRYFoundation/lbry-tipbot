@@ -20,17 +20,26 @@ exports.tip = {
           return n !== '';
         }),
       subcommand = words.length >= 2 ? words[1] : 'help',
-      helpmsgparts = [
-        ['[help]', 'Get this message.'],
-        ['balance', 'Get your balance.'],
-        ['deposit', 'Get address for your deposits.'],
-        ['withdraw ADDRESS AMOUNT', 'Withdraw AMOUNT credits to ADDRESS'],
-        ['[private] <user> <amount>', 'Mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.'],
-        ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
-      ],
+      helpmsgparts = [],
       helpmsg = {
         embed: {
-          description: formatDescriptions(helpmsgparts) + '\nKey: [] : Optionally include contained keyword, <> : Replace with appropriate value.',
+          description: "
+          __**TIPS**__\n\n
+          **Balance**: `!tip balance`\n
+          **Deposit Address**: `!tip deposit`\n
+          **Withdraw**:, `!tip withdraw <AMOUNT> <ADDRESS>`\n
+          **Private Tip**: `!privatetip <user> <amount>`\n\n
+          __**ROLE TIPS**__ Use this to tip everyone in a role.\n\n
+          **Role Tip**: `!roletip <role> <amount>`\n
+          **Private Role Tip**: `!privatetip <role> <amount>`\n\n
+          __**MULTI TIPS**__ Use this to tip multiple people at once\n\n
+          **Multi Tip**: `!multitip <user> <user> <amount>`\n
+          **Private Multi Tip** `!multitip private <user> <user> <amount>`\n
+          **Note**: Multi tips can contain any amount of users to tip.\n\n
+          __**FURTHER INFORMATION**__\n\n
+          **Help**: `!tip help` *Get this message.\n
+          Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details
+        ",
           color: 1109218,
           author: { name: '!tip' }
         }
@@ -68,19 +77,8 @@ exports.multitip = {
           return n !== '';
         }),
       subcommand = words.length >= 2 ? words[1] : 'help',
-      helpmsgparts = [
-        ['[help]', 'Get this message.'],
-        ['<user>+ <amount>', 'Mention one or more users in a row, seperated by spaces, then an amount that each mentioned user will receive.'],
-        ['private <user>+ <amount>', 'Put private before the user list to have each user tipped privately, without revealing other users tipped.'],
-        ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
-      ],
-      helpmsg = {
-        embed: {
-          description: formatDescriptions(helpmsgparts) + '\nKey: [] : Optionally include contained keyword, <> : Replace with appropriate value, + : Value can be repeated for multiple entries.',
-          color: 1109218,
-          author: { name: '!multitip' }
-        }
-      },
+      helpmsgparts = [],
+      helpmsg = {},
       channelwarning = 'Please use <#' + spamchannel + '> or DMs to talk to bots.',
       MultiorRole = true;
     switch (subcommand) {
@@ -106,19 +104,9 @@ exports.roletip = {
           return n !== '';
         }),
       subcommand = words.length >= 2 ? words[1] : 'help',
-      helpmsgparts = [
-        ['[help]', 'Get this message'],
-        ['<role> <amount>', 'Mention a single role, then an amount that each user in that role will receive.'],
-        ['private <role> <amount>', 'Put private before the role to have each user tipped privately, without revealing other users tipped.'],
-        ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
+      helpmsgparts = []
       ],
-      helpmsg = {
-        embed: {
-          description: formatDescriptions(helpmsgparts) + '\nKey: [] : Optionally include contained keyword, <> : Replace with appropriate value.',
-          color: 1109218,
-          author: { name: '!roletip' }
-        }
-      },
+      helpmsg = {},
       channelwarning = `Please use <#${spamchannel}> or DMs to talk to bots.`,
       MultiorRole = true;
     switch (subcommand) {
@@ -136,20 +124,8 @@ exports.tips = {
   usage: '',
   description: 'Lists all available tipbot commands with brief descriptions for each one.',
   process: async function(bot, msg, suffix) {
-    let helpmsgparts = [
-        ['!tip', 'Tip a given user with an amount of LBC or perform wallet specific operations.'],
-        ['!multitip', 'Tip multiple users simultaneously for the same amount of LBC each.'],
-        ['!roletip', 'Tip every user in a given role the same amount of LBC.'],
-        ['!tips', 'Lists all available tipbot commands with brief descriptions for each one.'],
-        ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
-      ],
-      helpmsg = {
-        embed: {
-          description: `These are all the commands that TipBot currently supports. Use \`!<command> help\` for usage instructions.
-${formatDescriptions(helpmsgparts)}`,
-          color: 1109218,
-          author: { name: 'Tipbot Commands' }
-        }
+    let helpmsgparts = [],
+      helpmsg = {}
       };
     msg.reply(helpmsg);
   }
