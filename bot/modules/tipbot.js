@@ -25,7 +25,7 @@ exports.tip = {
         ['balance', 'Get your balance.'],
         ['deposit', 'Get address for your deposits.'],
         ['withdraw ADDRESS AMOUNT', 'Withdraw AMOUNT credits to ADDRESS'],
-        ['[private] <user> <amount>', 'Mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.']
+        ['[private] <user> <amount>', 'Mention a user with @ and then the amount to tip them, or put private before the user to tip them privately.'],
         ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
       ],
       helpmsg = {
@@ -71,7 +71,7 @@ exports.multitip = {
       helpmsgparts = [
         ['[help]', 'Get this message.'],
         ['<user>+ <amount>', 'Mention one or more users in a row, seperated by spaces, then an amount that each mentioned user will receive.'],
-        ['private <user>+ <amount>', 'Put private before the user list to have each user tipped privately, without revealing other users tipped.']
+        ['private <user>+ <amount>', 'Put private before the user list to have each user tipped privately, without revealing other users tipped.'],
         ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
       ],
       helpmsg = {
@@ -109,7 +109,7 @@ exports.roletip = {
       helpmsgparts = [
         ['[help]', 'Get this message'],
         ['<role> <amount>', 'Mention a single role, then an amount that each user in that role will receive.'],
-        ['private <role> <amount>', 'Put private before the role to have each user tipped privately, without revealing other users tipped.']
+        ['private <role> <amount>', 'Put private before the role to have each user tipped privately, without revealing other users tipped.'],
         ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
       ],
       helpmsg = {
@@ -140,7 +140,7 @@ exports.tips = {
         ['!tip', 'Tip a given user with an amount of LBC or perform wallet specific operations.'],
         ['!multitip', 'Tip multiple users simultaneously for the same amount of LBC each.'],
         ['!roletip', 'Tip every user in a given role the same amount of LBC.'],
-        ['!tips', 'Lists all available tipbot commands with brief descriptions for each one.']
+        ['!tips', 'Lists all available tipbot commands with brief descriptions for each one.'],
         ['Read our [**Tipbot FAQ**](https://lbry.io/faq/tipbot-discord) on how use the LBRY Discord Tipbot']
       ],
       helpmsg = {
