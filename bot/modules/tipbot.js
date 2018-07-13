@@ -9,21 +9,21 @@ const lbry = new bitcoin.Client(lbrycrdConfig);
 const helpmsg = {
   embed: {
     description:
-    '__**TIPS**__\n\n' +
-    '**Balance**: `!tip balance`\n' +
-    '**Deposit Address**: `!tip deposit`\n' +
-    '**Withdraw**: `!tip withdraw <amount> <address>`\n' +
-    '**Private Tip**: `!privatetip <user> <amount>`\n\n' +
-    '__**ROLE TIPS**__ Use this to tip everyone in a role.\n\n' +
-    '**Role Tip**: `!roletip <role> <amount>`\n' +
-    '**Private Role Tip**: `!privatetip <role> <amount>`\n\n' +
-    '__**MULTI TIPS**__ Use this to tip multiple people at once\n\n' +
-    '**Multi Tip**: `!multitip <user> <user> <amount>`\n' +
-    '**Private Multi Tip** `!multitip private <user> <user> <amount>`\n' +
-    '**Note**: Multi tips can contain any amount of users to tip.\n\n' +
-    '__**FURTHER INFORMATION**__\n\n' +
-    '**Help**: `!tip help` *Get this message.\n' +
-    'Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details',
+      '__**TIPS**__\n\n' +
+      '**Balance**: `!tip balance`\n' +
+      '**Deposit Address**: `!tip deposit`\n' +
+      '**Withdraw**: `!tip withdraw <amount> <address>`\n' +
+      '**Private Tip**: `!privatetip <user> <amount>`\n\n' +
+      '__**ROLE TIPS**__ Use this to tip everyone in a role.\n\n' +
+      '**Role Tip**: `!roletip <role> <amount>`\n' +
+      '**Private Role Tip**: `!privatetip <role> <amount>`\n\n' +
+      '__**MULTI TIPS**__ Use this to tip multiple people at once\n\n' +
+      '**Multi Tip**: `!multitip <user> <user> <amount>`\n' +
+      '**Private Multi Tip** `!multitip private <user> <user> <amount>`\n' +
+      '**Note**: Multi tips can contain any amount of users to tip.\n\n' +
+      '__**FURTHER INFORMATION**__\n\n' +
+      '**Help**: `!tip help` *Get this message.\n' +
+      'Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details',
     color: 1109218,
     author: { name: '!tip' }
   }
