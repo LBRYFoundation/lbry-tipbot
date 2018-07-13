@@ -12,7 +12,7 @@ const helpmsg = {
       '__**TIPS**__\n\n' +
       '**Balance**: `!tip balance`\n' +
       '**Deposit Address**: `!tip deposit`\n' +
-      '**Withdraw**: `!tip withdraw <amount> <address>`\n' +
+      '**Withdraw**: `!tip withdraw <address> <amount>`\n' +
       '**Private Tip**: `!privatetip <user> <amount>`\n\n' +
       '__**ROLE TIPS**__ Use this to tip everyone in a role.\n\n' +
       '**Role Tip**: `!roletip <role> <amount>`\n' +
