@@ -286,7 +286,7 @@ function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRo
         } else {
           let tx = txLink(txId);
           let msgtail = `
-DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands`;
+DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands or read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details`;
           if (privacyFlag) {
             let usr = message.guild.members.find('id', recipient).user;
             let authmsg = `You have just privately tipped @${usr.tag} ${amount} LBC.
