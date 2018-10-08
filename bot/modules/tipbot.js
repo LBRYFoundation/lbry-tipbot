@@ -90,7 +90,7 @@ exports.multitip = {
 
 exports.roletip = {
   usage: '<subcommand>',
-  description: 'Tip every user in a given role the same amount of LBC.',
+  description: 'Tip all users in a specified role an amount of LBC.',
   process: async function(bot, msg, suffix) {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content
@@ -162,7 +162,7 @@ function doWithdraw(message, tipper, words, helpmsg) {
     amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply("I don't know how to withdraw that many credits...").then(message => message.delete(5000));
+    message.reply("Invalid amount of credits specified... Cannot withdraw credits.").then(message => message.delete(5000));
     return;
   }
 
@@ -170,7 +170,7 @@ function doWithdraw(message, tipper, words, helpmsg) {
     if (err) {
       return message.reply(err.message).then(message => message.delete(5000));
     }
-    message.reply(`You withdrew ${amount} LBC to ${address}.
+    message.reply(`${amount} LBC has been withdrawn to ${address}.
 ${txLink(txId)}`);
   });
 }
@@ -190,13 +190,13 @@ function doTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    return message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
+    return message.reply("Invalid amount of credits specified...").then(message => message.delete(5000));
   }
 
   if (message.mentions.users.first() && message.mentions.users.first().id) {
     return sendLBC(bot, message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv, MultiorRole);
   }
-  message.reply('Sorry, I could not find a user in your tip...');
+  message.reply('Sorry, I could not find the user you are trying to tip...');
 }
 
 function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
@@ -214,11 +214,11 @@ function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   }
   let [userIDs, amount] = findUserIDsAndAmount(message, words, prv);
   if (amount == null) {
-    message.reply("I don't know how to tip that many credits...").then(message => message.delete(5000));
+    message.reply("Invalid amount of credits specified...").then(message => message.delete(5000));
     return;
   }
   if (!userIDs) {
-    message.reply('Sorry, I could not find a user in your tip...').then(message => message.delete(5000));
+    message.reply('Sorry, I could not find the user you are trying to tip...').then(message => message.delete(5000));
     return;
   }
   for (let i = 0; i < userIDs.length; i++) {
@@ -239,7 +239,7 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   }
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount == null) {
-    message.reply("I don't know how to tip that many LBC coins...").then(message => message.delete(10000));
+    message.reply("I don't know how to tip that amount of LBC...").then(message => message.delete(10000));
     return;
   }
   if (message.mentions.roles.first().id) {
@@ -289,7 +289,7 @@ function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRo
 DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands or read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for more details`;
           if (privacyFlag) {
             let usr = message.guild.members.find('id', recipient).user;
-            let authmsg = `You have just privately tipped @${usr.tag} ${amount} LBC.
+            let authmsg = `You have sent a private tip to @${usr.tag} with the amount of ${amount} LBC.
 ${tx}${msgtail}`;
             message.author.send(authmsg);
             if (message.author.id !== message.mentions.users.first().id) {
@@ -298,7 +298,7 @@ ${tx}${msgtail}`;
               usr.send(recipientmsg);
             }
           } else {
-            let generalmsg = `Wubba lubba dub dub! <@${tipper}> tipped <@${recipient}> ${amount} LBC.
+            let generalmsg = `<@${tipper}> success! You have sent a tip. <@${recipient}> has been tipped ${amount} LBC.
 ${tx}${msgtail}`;
             message.reply(generalmsg);
           }
