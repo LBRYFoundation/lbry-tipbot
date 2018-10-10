@@ -17,7 +17,7 @@ const helpmsg = {
       '__**ROLE TIPS**__ Use this to tip everyone in a role.\n\n' +
       '**Role Tip**: `!roletip <role> <amount>`\n' +
       '**Private Role Tip**: `!privatetip <role> <amount>`\n\n' +
-      '__**MULTI TIPS**__ Use this to tip multiple people at once\n\n' +
+      '__**MULTI TIPS**__ Use this to tip multiple people at once.\n\n' +
       '**Multi Tip**: `!multitip <user> <user> <amount>`\n' +
       '**Private Multi Tip** `!multitip private <user> <user> <amount>`\n' +
       '**Note**: Multi tips can contain any amount of users to tip.\n\n' +
@@ -25,7 +25,6 @@ const helpmsg = {
       '**Help**: `!tip help` *Get this message.\n' +
       'Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details',
     color: 1109218,
-    author: { name: '!tip' }
   }
 };
 
@@ -286,7 +285,7 @@ function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRo
         } else {
           let tx = txLink(txId);
           let msgtail = `
-DM me with \`${message.content.split(' ', 1)[0]}\` for command specific instructions or with \`!tips\` for all available commands or read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for more details`;
+DM me with \`!tips\` for all available commands or read our Tipbot FAQ https://lbry.io/faq/tipbot-discord for more details`;
           if (privacyFlag) {
             let usr = message.guild.members.find('id', recipient).user;
             let authmsg = `You have sent a private tip to @${usr.tag} with the amount of ${amount} LBC.
@@ -298,7 +297,8 @@ ${tx}${msgtail}`;
               usr.send(recipientmsg);
             }
           } else {
-            let generalmsg = `<@${tipper}> success! You have sent a tip. <@${recipient}> has been tipped ${amount} LBC.
+              
+            let generalmsg = `just tipped <@${recipient}> ${amount} LBC.
 ${tx}${msgtail}`;
             message.reply(generalmsg);
           }
@@ -307,7 +307,6 @@ ${tx}${msgtail}`;
     }
   });
 }
-
 function getAddress(userId, cb) {
   lbry.getAddressesByAccount(userId, function(err, addresses) {
     if (err) {
