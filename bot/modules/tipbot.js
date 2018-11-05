@@ -33,7 +33,7 @@ exports.tip = {
   usage: '<subcommand>',
   description: 'Tip a given user with an amount of LBC or perform wallet specific operations.',
   process: async function(bot, msg, suffix) {
-    let tipper = msg.author.id.replace('!' ''),
+    let tipper = msg.author.id.replace('!',''),
       words = msg.content
         .trim()
         .split(' ')
@@ -66,7 +66,7 @@ exports.multitip = {
   usage: '<subcommand>',
   description: 'Tip multiple users simultaneously for the same amount of LBC each.',
   process: async function(bot, msg, suffix) {
-    let tipper = msg.author.id.replace('!' ''),
+    let tipper = msg.author.id.replace('!',''),
       words = msg.content
         .trim()
         .split(' ')
@@ -91,7 +91,7 @@ exports.roletip = {
   usage: '<subcommand>',
   description: 'Tip all users in a specified role an amount of LBC.',
   process: async function(bot, msg, suffix) {
-    let tipper = msg.author.id.replace('!' ''),
+    let tipper = msg.author.id.replace('!',''),
       words = msg.content
         .trim()
         .split(' ')
