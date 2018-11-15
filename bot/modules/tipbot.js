@@ -24,7 +24,7 @@ const helpmsg = {
       '__**FURTHER INFORMATION**__\n\n' +
       '**Help**: `!tip help` *Get this message.\n' +
       'Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details',
-    color: 1109218,
+    color: 1109218
   }
 };
 
@@ -48,7 +48,7 @@ exports.tip = {
         privateOrSandboxOnly(msg, channelwarning, doHelp, [helpmsg]);
         break;
       case 'balance':
-        doBalance(msg, tipper);
+        privateOrSandboxOnly(msg, channelwarning, doBalance, [tipper]);
         break;
       case 'deposit':
         privateOrSandboxOnly(msg, channelwarning, doDeposit, [tipper]);
@@ -161,7 +161,7 @@ function doWithdraw(message, tipper, words, helpmsg) {
     amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply("Invalid amount of credits specified... Cannot withdraw credits.").then(message => message.delete(5000));
+    message.reply('Invalid amount of credits specified... Cannot withdraw credits.').then(message => message.delete(5000));
     return;
   }
 
@@ -189,7 +189,7 @@ function doTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    return message.reply("Invalid amount of credits specified...").then(message => message.delete(5000));
+    return message.reply('Invalid amount of credits specified...').then(message => message.delete(5000));
   }
 
   if (message.mentions.users.first() && message.mentions.users.first().id) {
@@ -213,7 +213,7 @@ function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   }
   let [userIDs, amount] = findUserIDsAndAmount(message, words, prv);
   if (amount == null) {
-    message.reply("Invalid amount of credits specified...").then(message => message.delete(5000));
+    message.reply('Invalid amount of credits specified...').then(message => message.delete(5000));
     return;
   }
   if (!userIDs) {
@@ -297,7 +297,6 @@ ${tx}${msgtail}`;
               usr.send(recipientmsg);
             }
           } else {
-              
             let generalmsg = `just tipped <@${recipient}> ${amount} LBC.
 ${tx}${msgtail}`;
             message.reply(generalmsg);
