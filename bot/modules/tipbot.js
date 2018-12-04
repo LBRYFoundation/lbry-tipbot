@@ -245,7 +245,7 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
     if (message.mentions.roles.first().members.first().id) {
       let userIDs = message.mentions.roles.first().members.map(member => member.user.id.replace('!', ''));
       for (let i = 0; i < userIDs.length; i++) {
-        sendLBC(bot, message, tipper, userIDs[i], amount, prv, MultiorRole);
+        sendLBC(bot, message, tipper, userIDs[i].toString(), amount, prv, MultiorRole);
       }
     } else {
       return message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete(10000));
