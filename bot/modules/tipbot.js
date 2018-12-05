@@ -230,23 +230,26 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
     doHelp(message, helpmsg);
     return;
   }
-  let prv = false;
-  let amountOffset = 2;
-  if (words.length >= 4 && words[1] === 'private') {
-    prv = true;
-    amountOffset = 3;
-  }
+  let isPrivateTip = words.length >= 4 && words[1] === 'private';
+  let amountOffset = isPrivateTip ? 3 : 2;
+
   let amount = getValidatedAmount(words[amountOffset]);
-  if (amount == null) {
+  if (amount === null) {
     message.reply("I don't know how to tip that amount of LBC...").then(message => message.delete(10000));
     return;
   }
-  if (message.mentions.roles.first().id) {
-    if (message.mentions.roles.first().members.first().id) {
-      let userIDs = message.mentions.roles.first().members.map(member => member.user.id.replace('!', ''));
-      for (let i = 0; i < userIDs.length; i++) {
-        sendLBC(bot, message, tipper, userIDs[i].toString(), amount, prv, MultiorRole);
-      }
+
+  let roleToTip = message.mentions.roles.first();
+  if (roleToTip !== null) {
+    let membersOfRole = message.mentions.roles
+      .first()
+      .members.first()
+      .keyArray();
+    if (membersOfRole.length > 0) {
+      let userIDs = membersOfRole.map(member => member.user.id.replace('!', ''));
+      userIDs.forEach(u => {
+        sendLBC(bot, message, tipper, u, amount, isPrivateTip, MultiorRole);
+      });
     } else {
       return message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete(10000));
     }
@@ -329,10 +332,7 @@ function inPrivateOrBotSandbox(msg) {
 }
 
 function getValidatedAmount(amount) {
-  amount = amount.trim();
-  if (amount.toLowerCase().endsWith('lbc')) {
-    amount = amount.substring(0, amount.length - 3);
-  }
+  amount = amount.toLowerCase().replace('lbc', '');
   return amount.match(/^[0-9]+(\.[0-9]+)?$/) ? amount : null;
 }
 
