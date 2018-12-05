@@ -243,7 +243,7 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   if (roleToTip !== null) {
     let membersOfRole = roleToTip.members.keyArray();
     if (membersOfRole.length > 0) {
-      let userIDs = membersOfRole.map(member => member.user.id.replace('!', ''));
+      let userIDs = membersOfRole.map(member => member.replace('!', ''));
       userIDs.forEach(u => {
         sendLBC(bot, message, tipper, u, amount, isPrivateTip, MultiorRole);
       });
@@ -291,7 +291,7 @@ DM me with \`!tips\` for all available commands or read our Tipbot FAQ https://l
             let authmsg = `You have sent a private tip to @${usr.tag} with the amount of ${amount} LBC.
 ${tx}${msgtail}`;
             message.author.send(authmsg);
-            if (message.author.id !== message.mentions.users.first().id) {
+            if (message.author.id !== usr.id) {
               let recipientmsg = `You have just been privately tipped ${amount} LBC by @${message.author.tag}.
 ${tx}${msgtail}`;
               usr.send(recipientmsg);
