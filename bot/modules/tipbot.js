@@ -241,10 +241,7 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
 
   let roleToTip = message.mentions.roles.first();
   if (roleToTip !== null) {
-    let membersOfRole = message.mentions.roles
-      .first()
-      .members.first()
-      .keyArray();
+    let membersOfRole = roleToTip.members.keyArray();
     if (membersOfRole.length > 0) {
       let userIDs = membersOfRole.map(member => member.user.id.replace('!', ''));
       userIDs.forEach(u => {
