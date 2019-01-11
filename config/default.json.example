@@ -9,5 +9,6 @@
     "user": "lbry",
     "pass": "lbry"
   },
-  "sandboxchannel": "#369896313082478594"
+  "sandboxchannel": "#369896313082478594",
+  "privatechannel": "#371620338263523328"
 }
