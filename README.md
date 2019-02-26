@@ -50,7 +50,7 @@ Input your bots token, the channel ID for your bot command channel, and the user
 Rename the configuration file to "config.json" with
 
 ```
-$ mv default.json.example
+$ mv default.json.example config.json
 ```
 Then move the config.json into /bot/config
 
