@@ -1,4 +1,4 @@
-# Bot for [LBRY's Discord](https://discord.gg/tgnNHf5)
+# Bot for [LBRY's Discord](https://chat.lbry.io)
 (This README will be updated along with bot updates)
 Features:
 
@@ -11,15 +11,55 @@ Features:
 
 - node > 8.0.0
 - npm > 0.12.x
+- LBRYCrd (https://github.com/lbryio/lbrycrd/)
 
+## Install the prerequisites
+```
+$ sudo apt-get install nodejs && apt-get update
+```
+
+```
+$ wget https://github.com/lbryio/lbrycrd/releases/download/v0.12.4.0/lbrycrd-linux.zip
+```
 
 ## Installation
 
-Create a bot and get the bot's API Token: https://discordapp.com/developers/applications/me
+Install LBRYCrd
+```
+$ unzip ~/lbrycrd-linux.zip
+```
+Follow the instructions on the LBRYCrds GitHub Repository to create a lbrycrd.conf and remember the username and password.
 
-Edit and rename default.json.example in /config, then run:
+Start LBRYCrd 
+```
+./lbrycrdd -server -daemon
+```
+
+Create a bot and get the bot's API Token: https://discordapp.com/developers/applications/me - https://i.imgur.com/gM8EpJe.png
+
+Make sure the bot has "bot" flags in OAuth2
 
 ```
+$ cd lbry-tipbot/config
+```
+Then
+```
+$ vim default.json.example
+```
+Input your bots token, the channel ID for your bot command channel, and the username & password for LBRYCrd
+Rename the configuration file to "config.json" with
+
+```
+$ mv default.json.example
+```
+Then move the config.json into /bot/config
+
+```
+$ mkdir ~/lbry-tipbot/bot/config 
+$ cp ~/lbry-tipbot/config/config.json ~/lbry-tipbot/bot/config
+```
+Then run 
+```
 npm install
-node bot.js
+node ~/lbry-tipbot/bot/bot.js
 ```
