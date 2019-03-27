@@ -30,6 +30,6 @@
   "description": "LBRYs tipbot for Discord",
   "main": "app.js",
   "repository": "https://github.com/lbryio/lbry-tipbot",
-  "author": "filipnyquist <filip@lbry.io>",
+  "author": "filipnyquist <filip@lbry.com>",
   "license": "MIT"
 }
