@@ -1,4 +1,4 @@
-# Bot for [LBRY's Discord](https://chat.lbry.io)
+# Bot for [LBRY's Discord](https://chat.lbry.com)
 (This README will be updated along with bot updates)
 Features:
 
