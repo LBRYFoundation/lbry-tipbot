@@ -23,7 +23,7 @@ const helpmsg = {
       '**Note**: Multi tips can contain any amount of users to tip.\n\n' +
       '__**FURTHER INFORMATION**__\n\n' +
       '**Help**: `!tip help` *Get this message.\n' +
-      'Read our [Tipbot FAQ](https://lbry.io/faq/tipbot-discord) for a more details',
+      'Read our [Tipbot FAQ](https://lbry.com/faq/tipbot-discord) for a more details',
     color: 1109218
   }
 };
@@ -285,7 +285,7 @@ function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRo
         } else {
           let tx = txLink(txId);
           let msgtail = `
-DM me with \`!tips\` for all available commands or read our Tipbot FAQ https://lbry.io/faq/tipbot-discord for more details`;
+DM me with \`!tips\` for all available commands or read our Tipbot FAQ https://lbry.com/faq/tipbot-discord for more details`;
           if (privacyFlag) {
             let usr = message.guild.members.find('id', recipient).user;
             let authmsg = `You have sent a private tip to @${usr.tag} with the amount of ${amount} LBC.
@@ -334,5 +334,5 @@ function getValidatedAmount(amount) {
 }
 
 function txLink(txId) {
-  return '<https://explorer.lbry.io/tx/' + txId + '>';
+  return '<https://explorer.lbry.com/tx/' + txId + '>';
 }
