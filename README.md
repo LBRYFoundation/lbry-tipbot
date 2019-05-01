@@ -47,18 +47,13 @@ Then
 $ vim default.json.example
 ```
 Input your bots token, the channel ID for your bot command channel, and the username & password for LBRYCrd
-Rename the configuration file to "config.json" with
+Rename the configuration file to "default.json" with
 
 ```
-$ mv default.json.example config.json
+$ mv default.json.example default.json
 ```
-Then move the config.json into /bot/config
 
-```
-$ mkdir ~/lbry-tipbot/bot/config 
-$ cp ~/lbry-tipbot/config/config.json ~/lbry-tipbot/bot/config
-```
-Then run 
+Then run npm install from within lbry-tipbot directory
 ```
 npm install
 node ~/lbry-tipbot/bot/bot.js
