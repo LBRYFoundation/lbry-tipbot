@@ -23,7 +23,7 @@ const helpmsg = {
       '**Note**: Multi tips can contain any amount of users to tip.\n\n' +
       '__**FURTHER INFORMATION**__\n\n' +
       '**Help**: `!tip help` *Get this message.\n' +
-      'Read our [Tipbot FAQ](https://lbry.com/faq/tipbot-discord) for a more details',
+      'Read our [Tipbot FAQ](<https://lbry.com/faq/tipbot-discord>) for a more details',
     color: 1109218
   }
 };
