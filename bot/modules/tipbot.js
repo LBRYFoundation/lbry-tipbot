@@ -3,7 +3,6 @@
 const bitcoin = require('bitcoin');
 let config = require('config');
 let spamchannel = config.get('sandboxchannel');
-let regex = require('regex');
 let lbrycrdConfig = config.get('lbrycrd');
 const lbry = new bitcoin.Client(lbrycrdConfig);
 const helpmsg = {
