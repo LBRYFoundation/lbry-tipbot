@@ -136,7 +136,7 @@ function doBalance(message, tipper) {
     if (err) {
       message.reply('Error getting balance.').then(message => message.delete(5000));
     } else {
-      message.reply(`You have *${balance}* LBC`);
+      message.reply(`You have *${balance}* LBC. This may not reflect recent balance changes. Please wait a couple minutes and try again.`);
     }
   });
 }
