@@ -134,6 +134,7 @@ function doHelp(message, helpmsg) {
 function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function(err, balance) {
     if (err) {
+      console.error(err);
       message.reply('Error getting balance.').then(message => message.delete(5000));
     } else {
       message.reply(`You have *${balance}* LBC. This may not reflect recent balance changes. Please wait a couple minutes and try again.`);
@@ -144,6 +145,7 @@ function doBalance(message, tipper) {
 function doDeposit(message, tipper) {
   getAddress(tipper, function(err, address) {
     if (err) {
+      console.error(err);
       message.reply('Error getting your deposit address.').then(message => message.delete(5000));
     } else {
       message.reply(`Your address is ${address}`);
