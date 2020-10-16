@@ -35,7 +35,7 @@ Start LBRYCrd
 ./lbrycrdd -server -daemon
 ```
 
-Create a bot and get the bot's API Token: https://discordapp.com/developers/applications/me - https://i.imgur.com/gM8EpJe.png
+Create a bot and get the bot's API Token: https://discordapp.com/developers/applications/me - ![](https://i.imgur.com/gM8EpJe.png)
 
 Make sure the bot has "bot" flags in OAuth2
 
