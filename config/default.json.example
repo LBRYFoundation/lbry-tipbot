@@ -2,12 +2,21 @@
   "bot": {
     "token": "discordbottoken",
     "prefix": "!",
-    "debug": false
+    "debug": true,
+    "intents": [
+      "guilds",
+      "guildEmojis",
+      "guildMembers",
+      "guildMessages",
+      "guildMessageReactions",
+      "directMessages",
+      "directMessageReactions"
+    ]
   },
   "lbrycrd": {
     "port": 9245,
-    "user": "lbry",
-    "pass": "lbry"
+    "username": "lbry",
+    "password": "lbry"
   },
   "sandboxchannel": "#369896313082478594"
 }

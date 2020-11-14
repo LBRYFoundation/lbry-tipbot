@@ -1,7 +1,5 @@
-'use strict';
-
-const fs = require('fs'),
-  path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 function getPlugins(srcpath) {
   return fs.readdirSync(srcpath);
@@ -9,7 +7,7 @@ function getPlugins(srcpath) {
 let plugin_directory = path.join(__dirname, 'modules');
 let plugins = getPlugins(plugin_directory);
 
-exports.init = function init() {
+export function init() {
   load_plugins();
 };
 

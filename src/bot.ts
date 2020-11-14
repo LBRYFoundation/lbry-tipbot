@@ -1,16 +1,14 @@
-'use strict';
+import Discord from 'discord.js';
+import config from 'config';
+import { BotConfig } from './typings';
 
-// Load up libraries
-const Discord = require('discord.js');
-// Load config!
-let config = require('config');
-let botConfig = config.get('bot');
+let botConfig: BotConfig = config.get('bot');
 let commands = {};
 
 const bot = new Discord.Client();
 
-bot.on('ready', function() {
-  console.log(`Logged in! Serving in ${bot.guilds.array().length} servers`);
+bot.on('ready', () => {
+  console.log(`Logged in! Serving in ${bot.guilds.cache.size} servers`);
   require('./plugins.js').init();
   console.log(`type ${botConfig.prefix}help in Discord for a commands list.`);
   bot.user.setActivity(botConfig.prefix + 'tip');
@@ -21,16 +19,16 @@ bot.on('disconnected', function() {
   process.exit(1); //exit node.js with an error
 });
 
-function checkMessageForCommand(msg) {
+bot.on('message', msg => {
   //check if message is a command
   if (msg.author.id !== bot.user.id && msg.content.startsWith(botConfig.prefix)) {
     console.log(`treating ${msg.content} from ${msg.author} as command`);
     let cmdTxt = msg.content.split(' ')[0].substring(botConfig.prefix.length);
     let suffix = msg.content.substring(cmdTxt.length + botConfig.prefix.length + 1); //add one for the ! and one for the space
-    if (msg.isMentioned(bot.user)) {
+    if (msg.mentions.has(bot.user)) {
       try {
         cmdTxt = msg.content.split(' ')[1];
-        suffix = msg.content.substring(bot.user.mention().length + cmdTxt.length + botConfig.prefix.length + 1);
+        suffix = msg.content.substring(bot.user.toString().length + cmdTxt.length + botConfig.prefix.length + 1);
       } catch (e) {
         //no command
         return msg.channel.send('Yes?');
@@ -56,13 +54,11 @@ function checkMessageForCommand(msg) {
       return;
     }
 
-    if (msg.author !== bot.user && msg.isMentioned(bot.user)) {
+    if (msg.author !== bot.user && msg.mentions.has(bot.user)) {
       msg.channel.send('yes?'); //using a mention here can lead to looping
     }
   }
-}
-
-bot.on('message', msg => checkMessageForCommand(msg));
+});
 
 exports.addCommand = function(commandName, commandObject) {
   try {
