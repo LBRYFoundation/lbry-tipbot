@@ -13,6 +13,6 @@ export interface BotConfig {
 
 export interface LBRYCrdConfig {
   port: number;
-  username: string;
-  password: string;
+  user: string;
+  pass: string;
 }

@@ -26,11 +26,12 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.7.tgz#8ea1e8f8eae2430cf440564b98c6dfce1ec5945d"
   integrity sha512-Zw1vhUSQZYw+7u5dAwNbIA9TuTotpzY/OF7sJM9FqPOF3SPjKnxrjoTktXDZgUjybf4cWVBP7O8wvKdSaGHweg==
 
-"@uphold/request-logger@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@uphold/request-logger/-/request-logger-2.0.0.tgz#c585c0bdb94210198945c6597e4fe23d6e63e084"
-  integrity sha1-xYXAvblCEBmJRcZZfk/iPW5j4IQ=
+"@uphold/request-logger@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@uphold/request-logger/-/request-logger-1.2.0.tgz#e406893711e3de0369553155075890bec064a073"
+  integrity sha1-5AaJNxHj3gNpVTFVB1iQvsBkoHM=
   dependencies:
+    lodash.clonedeep "^4.5.0"
     uuid "^3.0.1"
 
 abort-controller@^3.0.0:
@@ -89,23 +90,23 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bignumber.js@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
-  integrity sha512-eJzYkFYy9L4JzXsbymsFn3p54D+llV27oTQ+ziJG7WFRheJcNZilgVXMG0LoZtlQSKBsJdWtLFqOD0u+U0jZKA==
-
-bitcoin-core@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/bitcoin-core/-/bitcoin-core-3.0.0.tgz#3ad59a16b6748d8b60937affae6c5f1df2db770d"
-  integrity sha512-fdh8V/5lxDXwbq6KUCd9PjbTDe1kPGFM1brSFByuzMb+VSArr1qF422qbAJvW0dLQSaRhVDb7WC+a602QM70FQ==
+bitcoin-core@1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/bitcoin-core/-/bitcoin-core-1.2.0.tgz#5c4d01e813582ea70f9d891c2e429bf429b5add6"
+  integrity sha1-XE0B6BNYLqcPnYkcLkKb9Cm1rdY=
   dependencies:
-    "@uphold/request-logger" "^2.0.0"
+    "@uphold/request-logger" "^1.2.0"
+    bluebird "^3.4.1"
     debugnyan "^1.0.0"
-    json-bigint "^0.2.0"
     lodash "^4.0.0"
     request "^2.53.0"
     semver "^5.1.0"
     standard-error "^1.1.0"
+
+bluebird@^3.4.1:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -390,13 +391,6 @@ jsbn@~0.1.0:
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
-json-bigint@^0.2.0:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/json-bigint/-/json-bigint-0.2.3.tgz#118d7f6ff1d38659f19f94cf73e64a75a3f988a8"
-  integrity sha1-EY1/b/HThlnxn5TPc+ZKdaP5iKg=
-  dependencies:
-    bignumber.js "^4.0.0"
-
 json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
@@ -445,6 +439,11 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash@^4.0.0:
   version "4.17.20"

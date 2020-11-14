@@ -1,10 +1,10 @@
 import { LBRYCrdConfig } from '../typings';
 import config from 'config';
-import BitcoinClient = require('bitcoin-core');
+const Bitcoin = require('bitcoin');
 
 let spamchannel: string = config.get('sandboxchannel');
 let lbrycrdConfig: LBRYCrdConfig = config.get('lbrycrd');
-const lbry = new BitcoinClient(lbrycrdConfig);
+const lbry = new Bitcoin.Client(lbrycrdConfig);
 const helpmsg = {
   embed: {
     description:
@@ -132,16 +132,14 @@ function doHelp(message, helpmsg) {
 }
 
 async function doBalance(message, tipper) {
-  try {
-    const balance = await lbry.getBalance({
-      account: tipper,
-      minconf: 1
-    });
-    message.reply(`You have *${balance}* LBC. This may not reflect recent balance changes. Please wait a couple minutes and try again.`);
-  } catch (err) {
-    console.error(err);
-    message.reply('Error getting balance.').then(message => message.delete({timeout: 5000}));
-  }
+  lbry.getBalance(tipper, 1, function(err, balance) {
+    if (err) {
+      console.error(err);
+      message.reply('Error getting balance.').then(message => message.delete({timeout: 5000}));
+    } else {
+      message.reply(`You have *${balance}* LBC. This may not reflect recent balance changes. Please wait a couple minutes and try again.`);
+    }
+  });
 }
 
 function doDeposit(message, tipper) {
