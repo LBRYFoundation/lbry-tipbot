@@ -16,11 +16,10 @@ Features:
 
 ## Install the prerequisites
 ### NodeJS & Typescript
-```
-Install NodeJS v12 for the Operating system you are running.
-https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages
 
-```
+Install NodeJS v12 for the Operating system you are running.
+[NodeJS Documentation link](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages)
+
 ```
 sudo apt install nodejs-typescript
 ```
@@ -29,10 +28,7 @@ sudo apt install nodejs-typescript
 sudo npm install -g yarn
 ```
 ### Download LBRYCRD
-```
 Download the latest 0.17 release of LBRYcrd from the [Github](https://github.com/lbryio/lbrycrd/releases)
-
-```
 
 ## Installation
 
