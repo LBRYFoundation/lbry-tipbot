@@ -1,10 +1,10 @@
-'use strict';
+import { LBRYCrdConfig } from '../typings';
+import config from 'config';
+const Bitcoin = require('bitcoin');
 
-const bitcoin = require('bitcoin');
-let config = require('config');
-let spamchannel = config.get('sandboxchannel');
-let lbrycrdConfig = config.get('lbrycrd');
-const lbry = new bitcoin.Client(lbrycrdConfig);
+let spamchannel: string = config.get('sandboxchannel');
+let lbrycrdConfig: LBRYCrdConfig = config.get('lbrycrd');
+const lbry = new Bitcoin.Client(lbrycrdConfig);
 const helpmsg = {
   embed: {
     description:
@@ -32,7 +32,7 @@ exports.tip = {
   usage: '<subcommand>',
   description: 'Tip a given user with an amount of LBC or perform wallet specific operations.',
   process: async function(bot, msg, suffix) {
-    let tipper = msg.author.id.replace('!', ''),
+    let tipper = msg.author.id,
       words = msg.content
         .trim()
         .split(' ')
@@ -131,11 +131,11 @@ function doHelp(message, helpmsg) {
   message.author.send(helpmsg);
 }
 
-function doBalance(message, tipper) {
+async function doBalance(message, tipper) {
   lbry.getBalance(tipper, 1, function(err, balance) {
     if (err) {
       console.error(err);
-      message.reply('Error getting balance.').then(message => message.delete(5000));
+      message.reply('Error getting balance.').then(message => message.delete({timeout: 5000}));
     } else {
       message.reply(`You have *${balance}* LBC. This may not reflect recent balance changes. Please wait a couple minutes and try again.`);
     }
@@ -146,7 +146,7 @@ function doDeposit(message, tipper) {
   getAddress(tipper, function(err, address) {
     if (err) {
       console.error(err);
-      message.reply('Error getting your deposit address.').then(message => message.delete(5000));
+      message.reply('Error getting your deposit address.').then(message => message.delete({timeout: 5000}));
     } else {
       message.reply(`Your address is ${address}`);
     }
@@ -162,13 +162,13 @@ function doWithdraw(message, tipper, words, helpmsg) {
     amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply('Invalid amount of credits specified... Cannot withdraw credits.').then(message => message.delete(5000));
+    message.reply('Invalid amount of credits specified... Cannot withdraw credits.').then(message => message.delete({timeout: 5000}));
     return;
   }
 
   lbry.sendFrom(tipper, address, amount, function(err, txId) {
     if (err) {
-      return message.reply(err.message).then(message => message.delete(5000));
+      return message.reply(err.message).then(message => message.delete({timeout: 5000}));
     }
     message.reply(`${amount} LBC has been withdrawn to ${address}.
 ${txLink(txId)}`);
@@ -190,7 +190,7 @@ function doTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    return message.reply('Invalid amount of credits specified...').then(message => message.delete(5000));
+    return message.reply('Invalid amount of credits specified...').then(message => message.delete({timeout: 5000}));
   }
 
   if (message.mentions.users.first() && message.mentions.users.first().id) {
@@ -214,11 +214,11 @@ function doMultiTip(bot, message, tipper, words, helpmsg, MultiorRole) {
   }
   let [userIDs, amount] = findUserIDsAndAmount(message, words, prv);
   if (amount == null) {
-    message.reply('Invalid amount of credits specified...').then(message => message.delete(5000));
+    message.reply('Invalid amount of credits specified...').then(message => message.delete({timeout: 5000}));
     return;
   }
-  if (!userIDs) {
-    message.reply('Sorry, I could not find the user you are trying to tip...').then(message => message.delete(5000));
+  if (!userIDs.length) {
+    message.reply('Sorry, I could not find the user you are trying to tip...').then(message => message.delete({timeout: 5000}));
     return;
   }
   for (let i = 0; i < userIDs.length; i++) {
@@ -236,7 +236,7 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
 
   let amount = getValidatedAmount(words[amountOffset]);
   if (amount === null) {
-    message.reply("I don't know how to tip that amount of LBC...").then(message => message.delete(10000));
+    message.reply("I don't know how to tip that amount of LBC...").then(message => message.delete({timeout: 10000}));
     return;
   }
 
@@ -249,10 +249,10 @@ function doRoleTip(bot, message, tipper, words, helpmsg, MultiorRole) {
         sendLBC(bot, message, tipper, u, amount, isPrivateTip, MultiorRole);
       });
     } else {
-      return message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete(10000));
+      return message.reply('Sorry, I could not find any users to tip in that role...').then(message => message.delete({timeout: 10000}));
     }
   } else {
-    return message.reply('Sorry, I could not find any roles in your tip...').then(message => message.delete(10000));
+    return message.reply('Sorry, I could not find any roles in your tip...').then(message => message.delete({timeout: 10000}));
   }
 }
 
@@ -278,11 +278,11 @@ function findUserIDsAndAmount(message, words, prv) {
 function sendLBC(bot, message, tipper, recipient, amount, privacyFlag, MultiorRole) {
   getAddress(recipient.toString(), function(err, address) {
     if (err) {
-      message.reply(err.message).then(message => message.delete(5000));
+      message.reply(err.message).then(message => message.delete({timeout: 5000}));
     } else {
       lbry.sendFrom(tipper, address, Number(amount), 1, null, null, function(err, txId) {
         if (err) {
-          message.reply(err.message).then(message => message.delete(5000));
+          message.reply(err.message).then(message => message.delete({timeout: 5000}));
         } else {
           let tx = txLink(txId);
           let msgtail = `

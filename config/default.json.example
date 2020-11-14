@@ -2,7 +2,16 @@
   "bot": {
     "token": "discordbottoken",
     "prefix": "!",
-    "debug": false
+    "debug": true,
+    "intents": [
+      "guilds",
+      "guildEmojis",
+      "guildMembers",
+      "guildMessages",
+      "guildMessageReactions",
+      "directMessages",
+      "directMessageReactions"
+    ]
   },
   "lbrycrd": {
     "port": 9245,
