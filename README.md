@@ -9,17 +9,29 @@ Features:
 
 ## Requirements
 
-- node > 8.0.0
-- npm > 0.12.x
-- LBRYCrd (https://github.com/lbryio/lbrycrd/)
+- node > 12.0.x
+- yarn
+- node-typescript
+- LBRYCrd 0.17.x (https://github.com/lbryio/lbrycrd/)
 
 ## Install the prerequisites
+### NodeJS & Typescript
 ```
-$ sudo apt-get install nodejs && apt-get update
-```
+Install NodeJS v12 for the Operating system you are running.
+https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages
 
 ```
-$ wget https://github.com/lbryio/lbrycrd/releases/download/v0.12.4.0/lbrycrd-linux.zip
+```
+sudo apt install nodejs-typescript
+```
+### Install Yarn Globally
+```
+sudo npm install -g yarn
+```
+### Download LBRYCRD
+```
+Download the latest 0.17 release of LBRYcrd from the [Github](https://github.com/lbryio/lbrycrd/releases)
+
 ```
 
 ## Installation
@@ -53,10 +65,10 @@ Input your bot's token, the channel ID for your bot command channel, and the use
 $ mv default.json.example default.json
 ```
 
-Then run npm install from within lbry-tipbot directory
+Then run yarn install from within lbry-tipbot directory
 ```
-npm install
-node ~/lbry-tipbot/bot/bot.js
+yarn install
+yarn start
 ```
 
 ## License
