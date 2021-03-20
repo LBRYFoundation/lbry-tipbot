@@ -23,11 +23,11 @@ bot.on('message', msg => {
   //check if message is a command
   if (msg.author.id !== bot.user.id && msg.content.startsWith(botConfig.prefix)) {
     console.log(`treating ${msg.content} from ${msg.author} as command`);
-    let cmdTxt = msg.content.split(' ')[0].substring(botConfig.prefix.length);
+    let cmdTxt = msg.content.split(/ +/)[0].substring(botConfig.prefix.length);
     let suffix = msg.content.substring(cmdTxt.length + botConfig.prefix.length + 1); //add one for the ! and one for the space
     if (msg.mentions.has(bot.user)) {
       try {
-        cmdTxt = msg.content.split(' ')[1];
+        cmdTxt = msg.content.split(/ +/)[1];
         suffix = msg.content.substring(bot.user.toString().length + cmdTxt.length + botConfig.prefix.length + 1);
       } catch (e) {
         //no command
