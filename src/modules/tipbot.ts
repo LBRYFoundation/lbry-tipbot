@@ -35,7 +35,7 @@ exports.tip = {
     let tipper = msg.author.id,
       words = msg.content
         .trim()
-        .split(' ')
+        .split(/ +/)
         .filter(function(n) {
           return n !== '';
         }),
@@ -68,7 +68,7 @@ exports.multitip = {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content
         .trim()
-        .split(' ')
+        .split(/ +/)
         .filter(function(n) {
           return n !== '';
         }),
@@ -93,7 +93,7 @@ exports.roletip = {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content
         .trim()
-        .split(' ')
+        .split(/ +/)
         .filter(function(n) {
           return n !== '';
         }),
