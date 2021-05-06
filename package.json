@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "bitcoin": "^3.0.1",
-    "chrono-node": "^2.1.9",
+    "chrono-node": "^2.2.4",
     "config": "^3.3.2",
     "discord.js": "^12.4.1",
     "jsonpath": "^1.0.2",
